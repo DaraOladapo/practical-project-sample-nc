@@ -18,7 +18,7 @@ stages:
         - task: DotNetCoreCLI@2
           inputs:
             command: 'restore'
-            projects: '**/frontend.csproj'
+            projects: '**/*.csproj'
             feedsToUse: 'select'
         #api
         - task: DotNetCoreCLI@2
@@ -37,21 +37,21 @@ stages:
             ArtifactName: 'drop'
             publishLocation: 'Container'
         #serviceone
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'build'
-            projects: '**/serviceone.csproj'
-            arguments: '--configuration $(BuildConfiguration)'
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'publish'
-            publishWebProjects: true
-            arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(build.artifactstagingdirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
+        # - task: DotNetCoreCLI@2
+        #   inputs:
+        #     command: 'build'
+        #     projects: '**/serviceone.csproj'
+        #     arguments: '--configuration $(BuildConfiguration)'
+        # - task: DotNetCoreCLI@2
+        #   inputs:
+        #     command: 'publish'
+        #     publishWebProjects: true
+        #     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+        # - task: PublishBuildArtifacts@1
+        #   inputs:
+        #     PathtoPublish: '$(build.artifactstagingdirectory)'
+        #     ArtifactName: 'drop'
+        #     publishLocation: 'Container'
 
   - stage: release
     displayName: 'deployment-release'

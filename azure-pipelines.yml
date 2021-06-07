@@ -26,6 +26,16 @@ stages:
             command: 'build'
             projects: '**/*.csproj'
             arguments: '--configuration $(BuildConfiguration)'
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'publish'
+            publishWebProjects: true
+            arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
         #serviceone
         - task: DotNetCoreCLI@2
           inputs:

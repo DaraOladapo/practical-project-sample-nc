@@ -58,7 +58,7 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             cd "${{ env.NUMBERS_DIRECTORY }}"
-            az webapp up -n gwl-numbers --os-type Linux
+            az webapp up -n gwl-numbers
       # - name: Publish
       #   run: dotnet publish "${{ env.NUMBERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.NUMBERS_AZURE_WEBAPP_PACKAGE_PATH }}"
       

@@ -113,8 +113,7 @@ jobs:
           inlineScript: |
             cd "${{ env.MERGE_DIRECTORY }}"
             az webapp up -n gwl-merge --os-type Linux --resource-group gwl-project-demo
-            az webapp config appsettings set -g gwl-project-demo -n gwl-merge --settings AppSettings__lettersServiceURL https://gwl-letters.azurewebsites.net
-            az webapp config appsettings set -g gwl-project-demo -n gwl-merge --settings AppSettings__numbersServiceURL https://gwl-numbers.azurewebsites.net
+            az webapp config appsettings set -g gwl-project-demo -n gwl-merge --settings "@../../.github/workflows/mergeSettings.json"
   build-frontend-service:
     runs-on: ubuntu-latest
     needs: test
@@ -142,4 +141,4 @@ jobs:
           inlineScript: |
             cd "${{ env.FE_DIRECTORY }}"
             az webapp up -n gwl-frontend --os-type Linux --resource-group gwl-project-demo
-            az webapp config appsettings set -g gwl-project-demo -n gwl-frontend --settings AppSettings__mergedServiceURL https://gwl-merge.azurewebsites.net
+            az webapp config appsettings set -g gwl-project-demo -n gwl-frontend --settings "@../../.github/workflows/frontendSettings.json"

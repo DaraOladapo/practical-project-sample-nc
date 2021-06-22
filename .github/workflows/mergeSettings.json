@@ -1,0 +1,12 @@
+[
+    {
+        "name": "AppSettings__lettersServiceURL",
+        "value": "https://gwl-letters.azurewebsites.net",
+        "slotSetting": false
+    },
+    {
+        "name": "AppSettings__numbersServiceURL",
+        "value": "https://gwl-numbers.azurewebsites.net",
+        "slotSetting": false
+    }
+]

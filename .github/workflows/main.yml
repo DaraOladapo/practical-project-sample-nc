@@ -55,10 +55,10 @@ jobs:
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
+          azcliversion: 2.25.0
           inlineScript: |
             cd "${{ env.NUMBERS_DIRECTORY }}"
-            az webapp up -n gwl-numbers
+            az webapp up -n gwl-numbers --os-type Linux
       # - name: Publish
       #   run: dotnet publish "${{ env.NUMBERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.NUMBERS_AZURE_WEBAPP_PACKAGE_PATH }}"
       

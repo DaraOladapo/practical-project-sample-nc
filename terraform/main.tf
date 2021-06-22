@@ -11,27 +11,20 @@ provider "azurerm" {
     features {}
 }
 variable "services" {
-  description = "List of web apps"
-  type        = map
   default     = {
-    frontend = {
-      name="gwl-frontend"
-    },
-    serviceone = {
-      name="gwl-letters"
-    },
-    servicetwo = {
-      name="gwl-numbers"
-    },
-    servicethree = {
-      name="gwl-merge"
-    },
+    "frontend"  = "gwl-frontend"
+    "serviceone" ="gwl-letters"
+    "servicetwo"  ="gwl-numbers"
+    "servicethree"  ="gwl-merge"
   }
 }
 
 resource "azurerm_resource_group" "rg" {
-    name     = "gwl-tf-rg"
+    name     = "gwl-demo-rg"
     location = "uksouth"
+    tags = {
+      "project" = "true"
+    }
 }
 resource "azurerm_app_service_plan" "app-service-plan" {
   name = "gwl-tf-appservice"
@@ -47,7 +40,7 @@ resource "azurerm_app_service_plan" "app-service-plan" {
 resource "azurerm_app_service" "webapp" {
   
     for_each = var.services
-    name = each.value.name
+    name = each.value
     resource_group_name = azurerm_resource_group.rg.name
     location = azurerm_resource_group.rg.location
     app_service_plan_id = azurerm_app_service_plan.app-service-plan.id

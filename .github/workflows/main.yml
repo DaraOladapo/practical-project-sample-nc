@@ -91,7 +91,7 @@ jobs:
             azcliversion: 2.25.0
             inlineScript: |
               cd "${{ env.LETTERS_PACKAGE_PATH }}"
-              az webapp up -n gwl-letters --os-type Linux --resource-group gwl-project-demo
+              az webapp up -n gwl-letters --os-type Linux --resource-group gwl-project-demo --runtime "DOTNET|5.0"
   build-merge-service:
     runs-on: ubuntu-latest
     needs: test

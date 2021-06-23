@@ -46,6 +46,8 @@ jobs:
         run: dotnet restore "${{ env.NUMBERS_DIRECTORY }}"
       - name: Build
         run: dotnet build "${{ env.NUMBERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}
+      - name: Publish
+        run: dotnet publish "${{ env.NUMBERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.NUMBERS_PACKAGE_PATH }}"
       - name: publish numbers service to Azure
         run: az
       - name: Azure Login
@@ -58,8 +60,9 @@ jobs:
         with:
           azcliversion: 2.25.0
           inlineScript: |
-            cd "${{ env.NUMBERS_DIRECTORY }}"
-            az webapp up -n gwl-numbers --os-type Linux --resource-group gwl-project-demo
+            cd "${{ env.NUMBERS_PACKAGE_PATH }}"
+            az webapp up -n gwl-numbers --os-type Linux --resource-group gwl-project-demo --runtime "DOTNET |5.0"
+
   build-letters-service:
       runs-on: ubuntu-latest
       needs: test
@@ -91,7 +94,8 @@ jobs:
             azcliversion: 2.25.0
             inlineScript: |
               cd "${{ env.LETTERS_PACKAGE_PATH }}"
-              az webapp up -n gwl-letters --os-type Linux --resource-group gwl-project-demo --runtime "DOTNET|5.0"
+              az webapp up -n gwl-letters --os-type Linux --resource-group gwl-project-demo --runtime "DOTNET |5.0"
+ 
   build-merge-service:
     runs-on: ubuntu-latest
     needs: test
@@ -107,6 +111,8 @@ jobs:
         run: dotnet restore "${{ env.MERGE_DIRECTORY }}"
       - name: Build
         run: dotnet build "${{ env.MERGE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}
+      - name: Publish
+        run: dotnet publish "${{ env.MERGE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.MERGE_PACKAGE_PATH }}"
       - name: publish numbers service to Azure
         run: az
       - name: Azure Login
@@ -119,9 +125,9 @@ jobs:
         with:
           azcliversion: 2.25.0
           inlineScript: |
-            cd "${{ env.MERGE_DIRECTORY }}"
+            cd "${{ env.MERGE_PACKAGE_PATH }}"
             az webapp up -n gwl-merge --os-type Linux --resource-group gwl-project-demo
-            az webapp config appsettings set -g gwl-project-demo -n gwl-merge --settings "@../../.github/workflows/mergeSettings.json"
+            az webapp config appsettings set -g gwl-project-demo -n gwl-merge --settings "@../../../.github/workflows/mergeSettings.json"
   build-frontend-service:
     runs-on: ubuntu-latest
     needs: test
@@ -135,6 +141,8 @@ jobs:
         run: dotnet restore "${{ env.FE_DIRECTORY }}"
       - name: Build
         run: dotnet build "${{ env.FE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}
+      - name: Publish
+        run: dotnet publish "${{ env.MERGE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.FE_PACKAGE_PATH }}"
       - name: publish numbers service to Azure
         run: az
       - name: Azure Login
@@ -147,6 +155,6 @@ jobs:
         with:
           azcliversion: 2.25.0
           inlineScript: |
-            cd "${{ env.FE_DIRECTORY }}"
-            az webapp up -n gwl-frontend --os-type Linux --resource-group gwl-project-demo
-            az webapp config appsettings set -g gwl-project-demo -n gwl-frontend --settings "@../../.github/workflows/frontendSettings.json"
+            cd "${{ env.FE_PACKAGE_PATH }}"
+            az webapp up -n gwl-frontend --os-type Linux --resource-group gwl-project-demo --runtime "DOTNET |5.0"
+            az webapp config appsettings set -g gwl-project-demo -n gwl-frontend --settings "@../../../.github/workflows/frontendSettings.json"

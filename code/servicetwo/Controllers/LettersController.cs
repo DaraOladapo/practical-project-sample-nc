@@ -21,8 +21,7 @@ namespace serviceone.Controllers
         {
             var rnd = new Random();
             var returnIndex = rnd.Next(0, 25);
-            return "A";
-            //return Letters[returnIndex].ToString();
+            return Letters[returnIndex].ToString();
         }
     }
 }

@@ -143,7 +143,7 @@ jobs:
       - name: Build
         run: dotnet build "${{ env.FE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}
       - name: Publish
-        run: dotnet publish "${{ env.MERGE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.FE_PACKAGE_PATH }}"
+        run: dotnet publish "${{ env.FE_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.FE_PACKAGE_PATH }}"
       - name: publish numbers service to Azure
         run: az
       - name: Azure Login

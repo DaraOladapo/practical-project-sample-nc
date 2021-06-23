@@ -11,11 +11,16 @@ on:
 env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 5.0.x
+  FE_DIRECTORY: ./code/frontend
   NUMBERS_DIRECTORY: ./code/serviceone
   LETTERS_DIRECTORY: ./code/servicetwo
   MERGE_DIRECTORY: ./code/servicethree
-  FE_DIRECTORY: ./code/frontend
   TEST_DIRECTORY: ./code/tests
+  
+  FE_PACKAGE_PATH: ./code/frontend/publish
+  NUMBERS_PACKAGE_PATH: ./code/serviceone/publish
+  LETTERS_PACKAGE_PATH: ./code/servicetwo/publish
+  MERGE_PACKAGE_PATH: ./code/servicethree/publish
 
 jobs:
 
@@ -70,6 +75,9 @@ jobs:
           run: dotnet restore "${{ env.LETTERS_DIRECTORY }}"
         - name: Build
           run: dotnet build "${{ env.LETTERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}
+        - name: Publish
+          run: dotnet publish "${{ env.LETTERS_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --output "${{ env.LETTERS_PACKAGE_PATH }}"
+    
         - name: publish numbers service to Azure
           run: az
         - name: Azure Login
@@ -82,7 +90,7 @@ jobs:
           with:
             azcliversion: 2.25.0
             inlineScript: |
-              cd "${{ env.LETTERS_DIRECTORY }}"
+              cd "${{ env.LETTERS_PACKAGE_PATH }}"
               az webapp up -n gwl-letters --os-type Linux --resource-group gwl-project-demo
   build-merge-service:
     runs-on: ubuntu-latest
